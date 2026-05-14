@@ -183,13 +183,21 @@ English: Fill the following sections while reading. Chinese notes are enough at 
 
 中文笔记 / Chinese notes:
 
-English keywords:
+核心发现：在多文档 QA 和 KV 检索任务上，改变相关信息在上下文中的位置，模型准确率会出现 U 型曲线——开头和结尾最好，中间最差，GPT-3.5 最差跌了 20%+，甚至不如不给文档。扩展上下文窗口的模型（16K/100K）并不比短上下文版本更会用上下文，说明问题不在窗口大小，而在注意力机制本身。
+
+这是一个**位置偏差**问题，不是**信息量**问题。
+
+English keywords: U-shaped performance curve, primacy bias, recency bias, long-context models, position sensitivity
 
 ### Introduction
 
 中文笔记 / Chinese notes:
 
-English keywords:
+作者在 introduction 里指出的关键风险：大家都在卷“上下文窗口能塞多长”，但没人认真问“塞了之后模型到底用不用得好”。窗口变长 ≠ 模型能可靠使用其中的信息。
+
+本文的实验设计思路：控制信息位置这个单一变量，其他不变，看模型表现如何变化。这是“好变量”的典型——简单但能揭示本质。
+
+English keywords: context window, retrieval-augmented generation, controlled experiment
 
 ### Evaluation Setup
 
