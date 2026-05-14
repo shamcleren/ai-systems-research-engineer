@@ -218,7 +218,13 @@ English keywords: controlled experiment, variable isolation, Cartesian product
 
 中文笔记 / Chinese notes:
 
-English keywords:
+两个任务形成梯度诊断：
+- KV retrieval 是最简测试：必须精确匹配，一个字符都不能差。如果这个都做不好，说明注意力机制本身有问题。
+- Multi-document QA 是真实场景：答案需要理解提炼，不能靠关键词匹配。
+
+这个梯度设计的价值：有些模型 KV 完美但 QA 不行，说明问题在理解层面；有些两个都不行，说明问题在注意力层面。通过最简任务定位问题层级，再用复杂任务验证真实场景，比直接上复杂任务高效得多。
+
+English keywords: gradient diagnosis, simplest test, real-world validation
 
 ### Limitations
 

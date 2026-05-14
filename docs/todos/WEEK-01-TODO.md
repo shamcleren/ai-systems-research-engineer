@@ -59,7 +59,7 @@ Update these files:
 
   English: Identify the most important experimental variable: the position of relevant information in the context. Write one sentence explaining why this is a good variable.
 
-- [ ] **Step 5: Understand two tasks / 理解两个任务**
+- [x] **Step 5: Understand two tasks / 理解两个任务**
 
   中文：分别用中文解释 multi-document QA 和 key-value retrieval。每个任务写 2-3 句话。
 
