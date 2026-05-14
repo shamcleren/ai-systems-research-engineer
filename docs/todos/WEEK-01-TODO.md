@@ -65,7 +65,7 @@ Update these files:
 
   English: Explain multi-document QA and key-value retrieval in Chinese. Write 2-3 sentences for each task.
 
-- [ ] **Step 6: Write one-sentence thesis / 写一句话 thesis**
+- [x] **Step 6: Write one-sentence thesis / 写一句话 thesis**
 
   中文：用这个格式写：这篇论文认为 `<问题>` 可以通过 `<评测方法>` 暴露出来，证据是 `<主要现象>`。
 

@@ -49,7 +49,9 @@ English: Add at least 5 more terms while reading.
 
 English: This sentence compresses the paper's main argument. First understand the current version, then rewrite it in your own words.
 
-This paper argues that language models with long input windows do not necessarily use long contexts robustly, because their performance can degrade when relevant information appears in the middle of the input context, as shown by multi-document question answering and key-value retrieval evaluations.
+This paper argues that long-context language models lose attention depending on where relevant information appears in the context, which can be exposed by varying the position of key information, with the evidence being a U-shaped performance curve: best at the beginning and end, worst in the middle—where performance can drop below the closed-book baseline that provides no documents at all.
+
+用户版本（中文）：这篇论文认为长上下文模型的注意力会随信息位置变化而丢失，可以通过改变关键信息在上下文中的位置暴露出来，证据是准确率呈现 U 型曲线：首尾高、中间低，中间位置甚至不如不给文档的 closed-book baseline。
 
 ## Problem
 
