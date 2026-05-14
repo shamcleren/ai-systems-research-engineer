@@ -53,7 +53,7 @@ Update these files:
 
   English: Read the introduction. Write what risk or misunderstanding the authors identify about long-context models.
 
-- [ ] **Step 4: Find the experiment variable / 找实验变量**
+- [x] **Step 4: Find the experiment variable / 找实验变量**
 
   中文：找出本文最重要的实验变量：相关信息在上下文中的位置。写一句话解释为什么这是一个好变量。
 

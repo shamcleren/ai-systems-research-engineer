@@ -203,7 +203,16 @@ English keywords: context window, retrieval-augmented generation, controlled exp
 
 中文笔记 / Chinese notes:
 
-English keywords:
+实验设计的核心是控制变量法：固定其他变量，只动信息位置，观察 U 型曲线是否稳定出现。
+
+实验跑的是笛卡尔乘积（模型 × 文档数量 × 位置），但结论来自"固定两个、动一个"的对比：
+- 固定文档数量 + 模型，变位置 → 不同模型都出 U 型
+- 固定模型 + 位置范围，变文档数量 → 10/20/30 篇都出 U 型
+- 换模型（GPT-3.5/Claude/MPT/LongChat/Llama-2）→ 都出 U 型
+
+唯一一致变化的因素是位置，所以位置是因果变量。这证明了"位置"是一个好实验变量：有限可枚举、可控、能揭示本质。
+
+English keywords: controlled experiment, variable isolation, Cartesian product
 
 ### Main Results
 
