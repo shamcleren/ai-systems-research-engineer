@@ -278,16 +278,16 @@ English: Write at least five rows. Keep each row plain and conservative; do not 
 
 ### Step 10: Completion and Mentor Review / 完成并找 mentor review
 
-- [ ] Done
+- [x] Done
 
 #### Completion Log / 完成记录
 
 | Item | Answer |
 |---|---|
-| Date / 日期 | TODO |
-| Time spent / 耗时 | TODO |
-| Hardest part / 最难的地方 | TODO |
-| One question / 一个问题 | TODO |
+| Date / 日期 | 2026-05-14 ~ 2026-05-16 |
+| Time spent / 耗时 | 约 1 小时（5月14日 Step 1-6 约 50 分钟，5月16日 Step 7-9 约 10 分钟） |
+| Hardest part / 最难的地方 | Step 7: Evaluation Model — 需要区分"证明了什么"和"没证明什么"，这个边界比较抽象 |
+| One question / 一个问题 | 目前是双语对照，但我一般只看中文部分。英文能力要怎么提升？是否应该强制自己先读英文再看中文？ |
 
 #### Review Prompt / 复盘请求
 
@@ -347,7 +347,7 @@ Recommended next-week focus: write observations as evidence-bound claims. Use fe
 
 - [x] 中文：Step 1-9 都已经填写或勾选。
       English: Steps 1-9 are filled or checked.
-- [ ] 中文：Step 10 的 completion log 已填写，并且已经把 Review Prompt 发给 mentor。
+- [x] 中文：Step 10 的 completion log 已填写，并且已经把 Review Prompt 发给 mentor。
       English: Step 10 completion log is filled, and the Review Prompt has been sent to the mentor.
 - [x] 中文：所有答案都先写在本 TODO 文件里。
       English: All answers are written in this TODO file first.
