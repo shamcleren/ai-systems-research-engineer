@@ -149,13 +149,13 @@ For TRI, this suggests a future evaluation separation:
 
 English: Claim audit trains you to avoid over-inference. Every claim must include evidence and what it does not prove.
 
-| Claim | Supported by what evidence | What it does not prove | TRI relevance |
-|---|---|---|---|
-| Long context windows do not guarantee robust context use. | Performance changes when relevant information position changes. | Does not prove all long-context models fail in all settings. | TRI should not assume bigger context package is automatically better. |
-| Relevant information in the middle can be harder for models to use. | Multi-document QA and key-value retrieval results. | Does not prove the mechanism is fully understood. | TRI should consider evidence placement if using LLM consumers. |
-| Evaluation should vary evidence position. | The paper's protocol exposes position sensitivity. | Does not evaluate retrieval quality. | TRI future LLM-consumer eval can include evidence ordering tests. |
-| Key-value retrieval is useful as a controlled diagnostic. | It isolates the retrieval-from-context behavior. | Does not fully represent real incident analysis. | TRI can use synthetic diagnostics carefully, with clear boundaries. |
-| Context use and context construction are different problems. | The paper assumes the relevant information is present and tests usage. | Does not solve context generation itself. | TRI Paper 3 currently focuses more on construction than consumption. |
+| # | Claim | Evidence | Does NOT prove | TRI relevance |
+|---|---|---|---|---|
+| 1 | 长上下文窗口不等于能稳健使用上下文 | 改变信息位置后性能变化 | 不是所有长上下文模型在所有场景都失败 | TRI 不能假设 context package 越大越好 |
+| 2 | 中间位置的信息更难被模型使用 | QA 和 KV 任务的 U 型曲线 | 没有证明因果机制（为什么是这样） | TRI 如果用 LLM 做消费方，要考虑证据摆放位置 |
+| 3 | 评测应该变化信息位置 | 这个协议暴露了位置敏感性 | 没有评测检索质量 | TRI 未来 LLM 消费端评测可以加位置测试 |
+| 4 | Key-value retrieval 是有效的控制诊断 | 它隔离了“从上下文中检索”这个行为 | 不能完全代表真实场景 | TRI 可以用合成任务做诊断，但要明确边界 |
+| 5 | Context use 和 context construction 是两个不同问题 | 论文假设相关信息已存在，测试使用能力 | 没有解决 context 怎么生成 | TRI Paper 3 目前更偏构造，不偏消费 |
 
 ## Reusable Idea
 

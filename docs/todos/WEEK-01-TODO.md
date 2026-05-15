@@ -55,10 +55,6 @@ Abstract 的核心意思可以先这样理解：
 
 #### Your Answer / 你的回答
 
-中文：请只写 3 句话。不要追求完美，先写自己的理解。
-
-English: Write only three Chinese sentences. Do not aim for perfection; write your current understanding.
-
 1. 这篇论文研究什么问题：
 
    ```text
@@ -215,7 +211,7 @@ English: Use the format below to write one sentence. It can be plain; it does no
 
 ### Step 7: Evaluation Model / 评测模型
 
-- [ ] Done
+- [x] Done
 
 #### What to Do / 做什么
 
@@ -227,17 +223,17 @@ English: Break the evaluation into five slots. Short Chinese phrases are enough.
 
 | Item | 中文回答 |
 |---|---|
-| workload / 任务负载 | TODO |
-| variable / 变量 | TODO |
-| metrics / 指标 | TODO |
-| what it proves / 它能证明什么 | TODO |
-| what it does not prove / 它不能证明什么 | TODO |
+| workload / 任务负载 | multi-document question answering；key-value retrieval |
+| variable / 变量 | relevant information 在上下文中的位置 |
+| metrics / 指标 | QA 准确率；KV retrieval 的精确匹配正确率 |
+| what it proves / 它能证明什么 | 当相关信息已在上下文中时，模型使用信息的能力会受到位置影响；长窗口不等于稳健使用上下文 |
+| what it does not prove / 它不能证明什么 | 不证明所有长上下文模型在所有任务都失败；不证明检索质量好坏；不证明 context construction 本身是否正确 |
 
 ---
 
 ### Step 8: TRI Connection / 连接 TRI
 
-- [ ] Done
+- [x] Done
 
 #### What to Do / 做什么
 
@@ -253,14 +249,14 @@ English: Answer this question: TRI Paper 3 evaluates context construction qualit
 #### Your Answer / 你的回答
 
 ```text
-TODO: 用中文写 3-5 句话。
+TRI Paper 3 更关注 context construction quality，也就是 Context Generator 是否把相关实体、关系、信号、事件和候选对象放进 Context Package。Lost in the Middle 更关注 context use quality，也就是相关信息已经在上下文里时，模型能不能稳定使用这些信息。两者的区别是：前者问“证据有没有被构造和放进去”，后者问“证据已经放进去后，消费方有没有真正用到”。这说明 TRI 即使构造出高质量 Context Package，也还需要警惕下游 LLM、scorer 或人类是否会因为证据顺序、位置或噪声而使用失败。
 ```
 
 ---
 
 ### Step 9: Claim Audit / 主张审计
 
-- [ ] Done
+- [x] Done
 
 #### What to Do / 做什么
 
@@ -272,11 +268,11 @@ English: Write at least five rows. Keep each row plain and conservative; do not 
 
 | Claim / 主张 | Evidence / 证据 | What it does not prove / 不证明什么 | TRI relevance / 和 TRI 的关系 |
 |---|---|---|---|
-| TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
+| 长上下文窗口不等于能稳健使用上下文 | 改变信息位置后性能变化 | 不是所有长上下文模型在所有场景都失败 | TRI 不能假设 context package 越大越好 |
+| 中间位置的信息更难被模型使用 | QA 和 KV 任务的 U 型曲线 | 没有证明因果机制，也没有解释为什么一定是这样 | TRI 如果用 LLM 做消费方，要考虑证据摆放位置 |
+| 评测应该变化信息位置 | 这个协议暴露了位置敏感性 | 没有评测检索质量 | TRI 未来 LLM 消费端评测可以加位置测试 |
+| Key-value retrieval 是有效的控制诊断 | 它隔离了“从上下文中检索”这个行为 | 不能完全代表真实场景 | TRI 可以用合成任务做诊断，但要明确边界 |
+| Context use 和 context construction 是两个不同问题 | 论文假设相关信息已存在，测试使用能力 | 没有解决 context 怎么生成 | TRI Paper 3 目前更偏构造，不偏消费 |
 
 ---
 
@@ -319,9 +315,9 @@ Please review my Week 1 Lost in the Middle TODO answers as a research mentor. Fo
 
 ## Done Criteria / 完成标准
 
-- [ ] 中文：Step 1-10 都已经填写或勾选。  
-      English: Steps 1-10 are filled or checked.
-- [ ] 中文：所有答案都先写在本 TODO 文件里。  
+- [x] 中文：Step 1-9 都已经填写或勾选。
+      English: Steps 1-9 are filled or checked.
+- [ ] 中文：Step 10 的 completion log 已填写，并且已经把 Review Prompt 发给 mentor。
+      English: Step 10 completion log is filled, and the Review Prompt has been sent to the mentor.
+- [x] 中文：所有答案都先写在本 TODO 文件里。
       English: All answers are written in this TODO file first.
-- [ ] 中文：你已经把 Review Prompt 发给 mentor。  
-      English: You have sent the Review Prompt to the mentor.
