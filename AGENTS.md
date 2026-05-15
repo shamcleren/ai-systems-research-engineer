@@ -46,6 +46,23 @@ For learning-plan work:
 9. Every TODO must provide an explicit execution path: what to read or inspect first, how to understand it, where to answer inside the TODO, what counts as done, and what to do after completion. / 每个 TODO 都必须给出明确执行路径：先读什么、如何理解、在 TODO 的哪里回答、做到什么算完成、完成后做什么。
 10. If the user is expected to execute a task independently, do not assume they can infer source priority, answer location, review flow, or completion flow from repository structure. / 如果希望用户独立执行任务，不能假设用户会从仓库结构里推断材料优先级、答案位置、review 流程或完成后流程。
 
+## Cross-Device Git Sync Rule
+
+中文：这个仓库是跨端协作使用的。每次修改文件后，Codex 必须默认提交并推送到远端，避免另一端继续基于旧状态工作。
+
+English: This repository is used across devices. After every file change, Codex must commit and push to remote by default so another device does not continue from stale state.
+
+Required workflow / 必须流程：
+
+1. 中文：修改前后都用 `git status --short` 检查工作区，只提交本次相关改动。  
+   English: Check the worktree with `git status --short` before and after changes, and commit only changes related to the current task.
+2. 中文：完成修改后执行 `git add`、`git commit`、`git push`。  
+   English: After finishing changes, run `git add`, `git commit`, and `git push`.
+3. 中文：最终回复必须说明 commit hash、是否已 push、当前工作区是否干净。  
+   English: The final response must include the commit hash, whether it was pushed, and whether the worktree is clean.
+4. 中文：如果不能 push，例如远端冲突、网络失败或需要确认合并策略，必须明确说明阻塞原因和下一步建议。  
+   English: If pushing is not possible, for example because of remote conflicts, network failure, or a needed merge strategy decision, state the blocker and next suggested step clearly.
+
 ## Bilingual Communication Policy
 
 All mentoring-facing communication should include both Chinese and English.
