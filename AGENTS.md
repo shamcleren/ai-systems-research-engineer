@@ -43,6 +43,8 @@ For learning-plan work:
 6. Separate learning goals from project goals.
 7. Treat the researcher as a beginner in academic research workflows unless evidence shows otherwise.
 8. Convert every learning instruction into a concrete TODO document that can be revisited later.
+9. Every TODO must provide an explicit execution path: what to read or inspect first, how to understand it, where to answer inside the TODO, what counts as done, and what to do after completion. / 每个 TODO 都必须给出明确执行路径：先读什么、如何理解、在 TODO 的哪里回答、做到什么算完成、完成后做什么。
+10. If the user is expected to execute a task independently, do not assume they can infer source priority, answer location, review flow, or completion flow from repository structure. / 如果希望用户独立执行任务，不能假设用户会从仓库结构里推断材料优先级、答案位置、review 流程或完成后流程。
 
 ## Bilingual Communication Policy
 
@@ -82,6 +84,35 @@ Default weekly loop:
 4. Do one TRI-related experiment, metric critique, or design review.
 5. Write one research note or technical-report section.
 6. End with a claim audit: what can be claimed, what cannot be claimed, and what evidence is missing.
+
+## TODO Execution Path Rule
+
+中文：每个 weekly TODO 或 learning TODO 都必须做到“只打开这一份 TODO，也能执行”。
+
+English: Every weekly or learning TODO must be executable by opening that TODO file alone.
+
+必须包含：
+
+It must include:
+
+1. `How to Use This TODO / 如何使用这份 TODO`: tells the user to answer in the TODO first, and says mentor will organize stable content into long-term notes after review.
+2. `Source / 阅读材料`: official papers, local PDFs when appropriate, code, experiment records, and optional references, clearly separated.
+3. `Step-by-Step Execution / 一步步执行`: each step must include what to read, Chinese reading support when needed, what to write, and an answer box in the same step.
+4. `Mentor Organization Flow / Mentor 整理流程`: the user answers in the TODO first; after review, the mentor organizes stable content into paper notes, glossary, or research notes.
+5. `Done Criteria / 完成标准`: fully bilingual criteria, including specific subitems, not only section headings.
+6. `Review Prompt / 复盘请求`: the exact prompt the user should send to the mentor after finishing.
+
+中文：创建或更新 TODO 时，必须以 `docs/operating-system/BEGINNER_TODO_SYSTEM.md` 和 `docs/templates/WEEKLY_TODO_TEMPLATE.md` 作为质量门槛。
+
+English: When creating or updating TODOs, use `docs/operating-system/BEGINNER_TODO_SYSTEM.md` and `docs/templates/WEEKLY_TODO_TEMPLATE.md` as the quality bar.
+
+中文：如果任务依赖公开论文且官方 PDF 适合保存，优先下载到 `docs/papers/`，并让 TODO 指向本地 PDF；官方链接仍保留用于来源追溯。
+
+English: If the task depends on a public paper and the official PDF is appropriate to store, prefer downloading it into `docs/papers/` and point the TODO to the local PDF; keep the official link for source traceability.
+
+中文：如果源材料是英文论文，不能只写“读 abstract / introduction”。必须在同一个 step 内提供中文导读、关键词解释或非逐字摘要，让用户可以执行。
+
+English: If the source is an English paper, do not only write "read the abstract / introduction." The same step must include Chinese reading guidance, keyword explanations, or a non-literal summary so the user can execute it.
 
 ## Do Not
 
