@@ -313,6 +313,36 @@ Please review my Week 1 Lost in the Middle TODO answers as a research mentor. Fo
 6. what capability I should improve next week.
 ```
 
+#### Mentor Review Conclusion / Mentor 复盘结论
+
+Date / 日期: 2026-05-16
+
+中文：
+
+Week 1 的核心能力训练已经达标。你已经抓住了这篇论文的 problem / method / evaluation / claim，也能把 TRI 的 context construction 和本文的 context use 区分开。整体可以进入下一阶段。
+
+需要改进的地方：
+
+1. thesis 里的“注意力会随信息位置变化而丢失”略强。论文直接支持的是 performance / retrieval accuracy 随位置变化下降，不直接证明内部 attention 机制“丢失”。更稳妥的写法是：“模型使用相关信息的表现会随信息位置变化而下降”。
+2. Step 7 的 metrics 方向正确，但可以更研究化：不同任务使用不同指标，这些指标共同用于观察 position sensitivity。
+3. glossary 里的“现在很多模型达到 1M 上下文窗口”属于现代模型背景，不是本文直接 claim。后续写作时要区分 paper claim 和 background knowledge。
+4. Step 10 completion log 还未填写，所以流程上还没有完全 done。补日期、耗时、最难点、一个问题后，再视为 Week 1 完成。
+
+下一周建议重点训练：把观察写成 evidence-bound claim。少用机制词，多用实验能直接支持的表述。
+
+English:
+
+Week 1 meets the core training goal. You captured the paper's problem / method / evaluation / claim, and you separated TRI's context construction problem from this paper's context use problem. You can move to the next stage after completing the process log.
+
+Improvement points:
+
+1. "Attention loss" in the thesis is slightly stronger than what the paper directly proves. The paper supports performance / retrieval accuracy changing with position, not the internal mechanism of attention being lost. A safer phrasing is: "the model's use of relevant information degrades depending on information position."
+2. The Step 7 metrics are directionally correct, but can be more research-like: different tasks use different metrics, and those metrics jointly reveal position sensitivity.
+3. "Many models now reach 1M context windows" in the glossary is background knowledge, not a direct paper claim. Future writing should separate paper claims from background knowledge.
+4. Step 10 completion log is still empty, so the process is not fully done yet. Fill date, time spent, hardest part, and one question before marking Week 1 complete.
+
+Recommended next-week focus: write observations as evidence-bound claims. Use fewer mechanism words and more statements directly supported by experiments.
+
 ## Done Criteria / 完成标准
 
 - [x] 中文：Step 1-9 都已经填写或勾选。
