@@ -27,7 +27,7 @@ English: Read the local PDF only. You do not need to decide which link to use.
 
 ### Step 1: Title and Abstract / 标题和摘要
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -58,26 +58,26 @@ Abstract 的核心意思可以先这样理解：
 1. 这篇论文研究什么问题：
 
    ```text
-   TODO: 在这里写 1 句中文。
+   纯参数模型存储知识有局限（不完整、过时、难追溯），RAG 通过检索外部知识来增强生成，解决知识密集型 NLP 任务。
    ```
 
 2. 为什么这个问题重要：
 
    ```text
-   TODO: 在这里写 1 句中文。
+   模型参数是一种 memory，但不容易更新、不容易解释来源，也可能缺少细节；检索系统可以把外部知识作为可替换、可追溯的 memory。
    ```
 
 3. 作者大概怎么做：
 
    ```text
-   TODO: 在这里写 1 句中文。
+   用 DPR 做 dense retrieval 从 Wikipedia 检索 top-k 文档，再用 BART 作为 generator 基于检索结果生成答案，在 QA 和生成任务上对比 closed-book 和 retrieval-only baseline。
    ```
 
 ---
 
 ### Step 2: First Keywords / 第一批关键词
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -114,22 +114,22 @@ context selection
 
 | English term | 中文解释 |
 |---|---|
-| TODO | TODO |
-| TODO | TODO |
-| TODO | TODO |
-| TODO | TODO |
-| TODO | TODO |
-| TODO | TODO |
-| TODO | TODO |
-| TODO | TODO |
-| TODO | TODO |
-| TODO | TODO |
+| retrieval-augmented generation | 检索增强生成：先从外部知识库检索相关文档，再基于检索结果生成答案 |
+| knowledge-intensive task | 知识密集型任务：需要大量外部知识才能完成的 NLP 任务，如 QA、摘要 |
+| parametric memory | 参数记忆：知识存储在模型权重中，通过训练获取，不完整、过时、难追溯 |
+| non-parametric memory | 非参数记忆：知识存储在外部索引中，通过检索获取，可独立更新 |
+| retriever | 检索器：根据 query 从文档库中找到相关文档的组件，RAG 用的是 DPR |
+| generator | 生成器：基于 query + retrieved passages 生成答案的 seq2seq 模型 |
+| dense vector index | 密集向量索引：把文档编码为向量并存储，用于高效相似度搜索 |
+| RAG-Sequence | RAG 序列模式：整段生成主要依赖同一批文档，对每个文档单独生成再 marginalize |
+| RAG-Token | RAG token 模式：生成每个 token 时可考虑不同文档，更灵活 |
+| grounding | 接地/锚定：让生成内容有外部证据支撑，减少幻觉 |
 
 ---
 
 ### Step 3: Problem Definition / 问题定义
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -146,14 +146,14 @@ English: You are not looking for every model detail. You are looking for this id
 #### Your Answer / 你的回答
 
 ```text
-TODO: 用中文写 2-3 句话。说明作者认为纯 parametric model 有什么问题，以及 retrieval 为什么有帮助。
+作者认为纯 parametric model 的问题：1) 知识不完整，模型参数容量有限，无法存储所有知识；2) 知识可能过时，需要重新训练才能更新；3) 不容易追溯来源，无法解释答案依据。Retrieval 有帮助是因为：外部知识库可以独立更新、可追溯来源、容量不受模型参数限制。
 ```
 
 ---
 
 ### Step 4: System Model / 系统模型
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -178,17 +178,17 @@ input question
 
 | Item | 中文回答 |
 |---|---|
-| input / 输入 | TODO |
-| retriever 做什么 | TODO |
-| selected context 是什么 | TODO |
-| generator 做什么 | TODO |
-| output / 输出 | TODO |
+| input / 输入 | 用户的问题/query |
+| retriever 做什么 | 用 DPR bi-encoder 从 Wikipedia passages 索引中检索 top-k 最相关文档 |
+| selected context 是什么 | 被检索出的 top-k 文档片段，和 query 一起拼接给 generator |
+| generator 做什么 | BART-based seq2seq model，基于 question + retrieved passages 生成答案 |
+| output / 输出 | 生成的答案文本 |
 
 ---
 
 ### Step 5: Context Selection Boundary / 上下文选择边界
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -205,14 +205,14 @@ English: Week 1 asked: once information is already in context, can the model use
 #### Your Answer / 你的回答
 
 ```text
-TODO: 用中文写 3-5 句话。说明 RAG 如何选择 context，以及这个选择边界为什么重要。
+RAG 通过 DPR（dense retrieval）选择 context：query encoder 把问题编码为向量，document encoder 把所有文档预计算为向量存入 FAISS index，检索时做向量相似度搜索，取 top-k。这个选择边界重要是因为：1) 它决定了 generator 能看到什么证据，直接影响生成质量；2) 检索到的文档可能含噪声（distractor），也可能遗漏关键文档；3) 这是 context use 和 context selection 的分界——Week 1 论文假设信息已在上下文中，Week 2 的 RAG 负责把信息选进来。
 ```
 
 ---
 
 ### Step 6: RAG-Sequence vs RAG-Token / 两种 RAG 变体
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -232,20 +232,20 @@ English: Read the explanation of RAG-Sequence and RAG-Token. The goal is not to 
 RAG-Sequence：
 
 ```text
-TODO: 用中文写 1-2 句话。
+整段生成过程主要依赖同一批 retrieved documents。对每个文档单独跑一遍 full generation，再 marginalize 得到最终答案。适合需要全局一致性的任务，但计算量更大。
 ```
 
 RAG-Token：
 
 ```text
-TODO: 用中文写 1-2 句话。
+生成每个 token 时可以考虑不同的 retrieved documents。每个 token 步骤都重新做一次 retrieval 概率加权。更灵活，Jeopardy 生成任务上优于 RAG-Sequence。
 ```
 
 ---
 
 ### Step 7: Evaluation Model / 评测模型
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -267,7 +267,7 @@ English: Read Experiments / Results. Extract only tasks, baselines, metrics, wha
 
 ### Step 8: TRI Connection / 连接 TRI
 
-- [ ] Done
+- [x] Done
 
 #### What to Do / 做什么
 
@@ -284,14 +284,14 @@ English: Answer this question: how are RAG retrieved passages different from a T
 #### Your Answer / 你的回答
 
 ```text
-TODO: 用中文写 3-5 句话。
+RAG retrieved passages 是按 query 从文档库检索出的文本片段，是 raw retrieval output，本质是未经加工的材料。TRI Context Package 是结构化上下文，包含实体、关系、信号、事件、候选对象、约束和 provenance，是经过组织和解释的研究对象。关键区别：RAG 的输出是“材料”，TRI 的 Context Package 是“半成品研究报告”。这意味着 TRI 需要在 retrieval 之上增加一层结构化组装。
 ```
 
 ---
 
 ### Step 9: Claim Audit / 主张审计
 
-- [ ] Done
+- [x] Done
 
 #### What to Do / 做什么
 
@@ -303,26 +303,26 @@ English: Write at least five rows. Each row must include claim, evidence, what i
 
 | Claim / 主张 | Evidence / 证据 | What it does not prove / 不证明什么 | TRI relevance / 和 TRI 的关系 |
 |---|---|---|---|
-| TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
+| RAG 优于 closed-book 和 retrieval-only | 在 NQ、TriviaQA 等任务上 EM/F1 更高 | 不保证在所有任务上都更好 | TRI 可以用 retrieval 增强知识 |
+| RAG 可通过更新索引更新知识 | 实验验证了索引更新后答案变化 | 不保证更新过程无副作用 | TRI 知识库可以是可替换的外部索引 |
+| RAG-Token 某些任务优于 RAG-Sequence | Jeopardy 生成任务上表现更好 | 不证明在所有生成任务上更好 | TRI 可以考虑 token 级别的 context 选择 |
+| Dense retrieval 有效替代 BM25 | DPR 在开放域 QA 上超过 BM25 | 不证明 dense retrieval 总是更好 | TRI 检索层可以用 dense 方案 |
+| 检索增强能提升事实性 | 人工评估显示 RAG 真实性更高 | 不证明没有幻觉 | TRI 需要关注 grounding 和 provenance |
 
 ---
 
 ### Step 10: Completion and Mentor Review / 完成并找 mentor review
 
-- [ ] Done
+- [x] Done
 
 #### Completion Log / 完成记录
 
 | Item | Answer |
 |---|---|
-| Date / 日期 | TODO |
-| Time spent / 耗时 | TODO |
-| Hardest part / 最难的地方 | TODO |
-| One question / 一个问题 | TODO |
+| Date / 日期 | 2026-05-27 |
+| Time spent / 耗时 | 约 1 小时（讨论 + 整理） |
+| Hardest part / 最难的地方 | 效率/成本分析——论文没有讨论，需要自己推理 |
+| One question / 一个问题 | RAG 的 k 值在实际工程中最优是多少？ |
 
 #### Review Prompt / 复盘请求
 
@@ -352,9 +352,9 @@ Please review my Week 2 RAG TODO answers as a research mentor. Focus on:
 
 ## Done Criteria / 完成标准
 
-- [ ] 中文：Step 1-10 都已经填写或勾选。
+- [x] 中文：Step 1-10 都已经填写或勾选。
       English: Steps 1-10 are filled or checked.
-- [ ] 中文：所有答案都先写在本 TODO 文件里。
+- [x] 中文：所有答案都先写在本 TODO 文件里。
       English: All answers are written in this TODO file first.
 - [ ] 中文：你已经把 Review Prompt 发给 mentor。
       English: You have sent the Review Prompt to the mentor.
