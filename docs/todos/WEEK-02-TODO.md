@@ -356,6 +356,5 @@ Please review my Week 2 RAG TODO answers as a research mentor. Focus on:
       English: Steps 1-10 are filled or checked.
 - [x] 中文:所有答案都先写在本 TODO 文件里。
       English: All answers are written in this TODO file first.
-- [ ] 中文:你已经把 Review Prompt 发给 mentor。
+- [x] 中文:你已经把 Review Prompt 发给 mentor。
       English: You have sent the Review Prompt to the mentor.
-
