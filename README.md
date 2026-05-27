@@ -36,6 +36,7 @@ Roadmap details:
 - [12-week plan](docs/plans/2026-05-14-context-engineering-growth-plan.md)
 - [Week 1 TODO](docs/todos/WEEK-01-TODO.md)
 - [Week 2 TODO](docs/todos/WEEK-02-TODO.md)
+- [Week 3 TODO](docs/todos/WEEK-03-TODO.md)
 
 ## Baseline
 
