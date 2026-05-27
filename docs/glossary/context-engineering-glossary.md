@@ -30,11 +30,10 @@ This glossary is bilingual. Each entry should explain the term, not only transla
 | reranker | 重排序器，在初始检索后对候选文档重新打分排序 | 提升检索精度的关键组件，RAG 原论文未使用 |
 | BM25 | 基于词频和逆文档频率的经典检索算法，有相关性排序 | 适合做粗筛，成本低，但缺乏语义理解 |
 | RAG-Sequence | RAG 序列模式：整段生成主要依赖同一批 retrieved documents | 对每个文档单独生成，再 marginalize，适合需要全局一致性的任务 |
-| RAG-Token | RAG token 模式：生成每个 token 时可考虑不同的 retrieved documents | 更灵活，某些生成任务上优于 RAG-Sequence |
+| RAG-Token | RAG token 模式：在同一批 top-k retrieved documents 上,生成每个 token 时可对不同文档赋予不同权重 | 更灵活，某些生成任务上优于 RAG-Sequence；注意不是每个 token 都重新检索 |
 | FAISS | Facebook 的高效向量检索库，用于大规模 dense retrieval 的索引和搜索 | RAG 论文用它存储和检索 document embeddings |
 | DPR (Dense Passage Retrieval) | 密集段落检索，用 bi-encoder 架构做开放域问答的检索 | RAG 论文的检索器组件 |
 | grounding | 接地/锚定，让生成内容有外部证据支撑，减少幻觉 | RAG 和 TRI 都关注的核心目标 |
 | context selection | 上下文选择，决定哪些信息被纳入模型输入 | RAG 的检索阶段就是一种 context selection |
 
 Add new entries weekly.
-

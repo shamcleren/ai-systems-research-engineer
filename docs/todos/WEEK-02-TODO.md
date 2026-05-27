@@ -238,7 +238,7 @@ RAG-Sequence:
 RAG-Token:
 
 ```text
-生成每个 token 时可以考虑不同的 retrieved documents。每个 token 步骤都重新做一次 retrieval 概率加权。更灵活,Jeopardy 生成任务上优于 RAG-Sequence。
+生成每个 token 时可以在同一批 top-k retrieved documents 上做 token-level marginalization,也就是不同 token 可以对不同文档赋予不同权重。注意:这不是每个 token 都重新检索文档,而是在已检索出的文档集合内重新计算文档贡献。更灵活,Jeopardy 生成任务上优于 RAG-Sequence。
 ```
 
 ---
@@ -306,7 +306,7 @@ English: Write at least five rows. Each row must include claim, evidence, what i
 | RAG 优于 closed-book 和 retrieval-only | 在 NQ、TriviaQA 等任务上 EM/F1 更高 | 不保证在所有任务上都更好 | TRI 可以用 retrieval 增强知识 |
 | RAG 可通过更新索引更新知识 | 实验验证了索引更新后答案变化 | 不保证更新过程无副作用 | TRI 知识库可以是可替换的外部索引 |
 | RAG-Token 某些任务优于 RAG-Sequence | Jeopardy 生成任务上表现更好 | 不证明在所有生成任务上更好 | TRI 可以考虑 token 级别的 context 选择 |
-| Dense retrieval 有效替代 BM25 | DPR 在开放域 QA 上超过 BM25 | 不证明 dense retrieval 总是更好 | TRI 检索层可以用 dense 方案 |
+| RAG 采用 dense retrieval 作为 non-parametric memory | RAG 使用 DPR + FAISS 检索 Wikipedia passages,并在整体任务上优于 closed-book / retrieval-only baseline | 不证明 dense retrieval 总是优于 BM25、hybrid retrieval 或 reranker pipeline | TRI 可以把 dense retrieval 作为候选检索层,但要和 BM25 / hybrid / reranker 做实验证据对比 |
 | 检索增强能提升事实性 | 人工评估显示 RAG 真实性更高 | 不证明没有幻觉 | TRI 需要关注 grounding 和 provenance |
 
 ---
@@ -356,5 +356,42 @@ Please review my Week 2 RAG TODO answers as a research mentor. Focus on:
       English: Steps 1-10 are filled or checked.
 - [x] 中文:所有答案都先写在本 TODO 文件里。
       English: All answers are written in this TODO file first.
-- [x] 中文:你已经把 Review Prompt 发给 mentor。
-      English: You have sent the Review Prompt to the mentor.
+- [x] 中文:mentor 已经按 Review Prompt 完成复盘,并把稳定修正同步到 TODO、paper note 和 glossary。
+      English: The mentor has completed the review using the Review Prompt and synced stable corrections into the TODO, paper note, and glossary.
+
+## Mentor Review Result / Mentor 复盘结果
+
+### Overall Judgment / 总体判断
+
+中文:Week 2 完成质量合格,而且已经从"读论文摘要"推进到"能区分系统边界和 claim 边界"。你抓住了 RAG 的核心系统结构:retriever 负责 context selection,generator 负责生成,external index 作为 non-parametric memory。TRI connection 也成立:TRI Context Package 不是普通 raw retrieval output,而是经过结构化、带 provenance 的上下文对象。
+
+English: Week 2 is complete at a solid level. You moved beyond reading the abstract and started separating system boundaries from claim boundaries. You captured the core RAG structure: the retriever performs context selection, the generator produces text, and the external index acts as non-parametric memory. The TRI connection is also valid: a TRI Context Package is not plain raw retrieval output, but a structured context object with provenance.
+
+### Corrections Applied / 已修正问题
+
+1. 中文:RAG-Token 的解释已收紧。它不是每个 token 都重新检索文档,而是在同一批 top-k retrieved documents 上做 token-level marginalization。
+   English: The RAG-Token explanation has been tightened. It does not re-retrieve documents for each token; it performs token-level marginalization over the same top-k retrieved documents.
+2. 中文:`Dense retrieval 有效替代 BM25` 这个 claim 已收窄。RAG 论文能支持的是"RAG 采用 DPR + FAISS 作为 non-parametric memory 并在若干任务上有效",不能直接证明 dense retrieval 总是优于 BM25、hybrid retrieval 或 reranker pipeline。
+   English: The claim `dense retrieval effectively replaces BM25` has been narrowed. The RAG paper supports that RAG uses DPR + FAISS as non-parametric memory and works on several tasks; it does not directly prove that dense retrieval is always better than BM25, hybrid retrieval, or reranker pipelines.
+
+### What You Did Well / 做得好的地方
+
+中文:你最强的一点是能把论文里的模型结构翻译成工程系统边界:input、retriever、selected context、generator、output。这个能力对后续写 technical report 很关键,因为它能避免把所有东西混成"模型效果变好"这种模糊表达。
+
+English: Your strongest move was translating the model into engineering system boundaries: input, retriever, selected context, generator, and output. This matters for later technical-report writing because it avoids collapsing everything into vague statements like "the model performs better."
+
+中文:第二个亮点是你已经开始问 cost / latency / k 值的问题。论文没有主要讨论这些,但工程研究必须追问它们。这类问题应该保留到 Week 3/Week 5,和 context noise、metric design 连接起来。
+
+English: A second strong point is that you started asking about cost, latency, and the value of k. The paper does not focus on these, but engineering research must ask them. Keep these questions for Week 3/Week 5 and connect them to context noise and metric design.
+
+### Remaining Risks / 仍需注意
+
+中文:目前最容易过度推断的地方是把"论文采用了某组件"写成"论文证明了这个组件优于其他选择"。以后做 claim audit 时,每个 claim 都先问一句:这个 evidence 是直接实验结果、作者论证、还是我自己的工程推理?
+
+English: The main remaining risk is turning "the paper used a component" into "the paper proved this component is better than alternatives." In future claim audits, ask for each claim: is this evidence a direct experiment, an author argument, or my own engineering inference?
+
+### Next Capability / 下一周重点能力
+
+中文:Week 3 建议重点补"context noise / compression / information loss"。延续 Week 2 的问题:retriever 选进来的 context 不只是"有没有相关信息",还要看噪声比例、冗余、过期信息、和压缩后丢失了什么。
+
+English: For Week 3, focus on context noise, compression, and information loss. Continue from Week 2's question: retrieved context is not only about whether relevant information is included, but also about noise ratio, redundancy, stale information, and what gets lost after compression.

@@ -35,6 +35,10 @@ RAG combines a pre-trained seq2seq generator with a dense retrieval index (DPR +
 - RAG 可以通过更新检索索引来更新知识，无需重新训练模型
 - RAG-Token 在某些任务上优于 RAG-Sequence
 
+### Modeling Caveat（模型理解校正）
+- RAG-Token 不是每个 token 都重新检索文档。它是在同一批 top-k retrieved documents 上,对每个 token 做 document-level marginalization / weighting。
+- RAG 使用 DPR + FAISS,但这篇论文不能直接证明 dense retrieval 总是优于 BM25、hybrid retrieval 或 reranker pipeline。
+
 ### Not Proven（未证明）
 
 论文没有回答的核心问题：**检索文档数量过多时，效率和成本是否会爆炸增长？**
@@ -109,7 +113,7 @@ RAG retrieved passages vs TRI Context Package：
 | 1 | RAG 优于 closed-book 和 retrieval-only | 在 NQ、TriviaQA 等任务上 EM/F1 更高 | 不保证在所有任务上都更好 | TRI 可以用 retrieval 增强知识 |
 | 2 | RAG 可通过更新索引更新知识 | 实验验证了索引更新后答案变化 | 不保证更新过程无副作用 | TRI 知识库可以是可替换的外部索引 |
 | 3 | RAG-Token 某些任务优于 RAG-Sequence | Jeopardy 生成任务上表现更好 | 不证明在所有生成任务上更好 | TRI 可以考虑 token 级别的 context 选择 |
-| 4 | Dense retrieval 有效替代 BM25 | DPR 在开放域 QA 上超过 BM25 | 不证明 dense retrieval 总是更好 | TRI 检索层可以用 dense 方案 |
+| 4 | RAG 采用 dense retrieval 作为 non-parametric memory | RAG 使用 DPR + FAISS 检索 Wikipedia passages,并在整体任务上优于 closed-book / retrieval-only baseline | 不证明 dense retrieval 总是优于 BM25、hybrid retrieval 或 reranker pipeline | TRI 可以把 dense retrieval 作为候选检索层,但要和 BM25 / hybrid / reranker 做实验证据对比 |
 | 5 | 检索增强能提升事实性 | 人工评估显示 RAG 真实性更高 | 不证明没有幻觉 | TRI 需要关注 grounding 和 provenance |
 
 ## Open Questions
