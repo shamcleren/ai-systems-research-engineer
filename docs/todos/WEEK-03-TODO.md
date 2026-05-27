@@ -26,6 +26,47 @@ English: Read the local PDF only. You do not need to decide which link to use. T
 - Venue: ACL 2024
 - Optional reference / 可选参考: `docs/notes/papers/2026-05-14-lost-in-the-middle.md` and `docs/todos/WEEK-02-TODO.md`, only when you need to connect Week 1 and Week 2.
 
+## Paper Brief and Current Impact / 论文简介与当前影响
+
+中文:这一节是阅读前导读,帮你先知道这篇论文在讲什么、为什么值得读、现在有哪些技术或能力吸收了它的思路。它不是 claim audit 的直接证据;正式写 claim 时仍要回到论文实验和原文。
+
+English: This section is a pre-reading guide. It explains what the paper is about, why it is worth reading, and which current technologies or capabilities use related ideas. It is not direct evidence for claim audit; formal claims still need to be grounded in the paper's experiments and text.
+
+### 中文简介
+
+中文:LongLLMLingua 研究的是长上下文场景里的 prompt compression。它的出发点很工程化:把更多文档、更多历史、更多工具输出塞进 prompt,并不等于模型一定更好。长上下文会带来更高 cost / latency,也会把噪声、冗余、位置偏差一起带进来。论文希望在保留问题相关关键信息的前提下压缩 prompt,让 LLM 更容易看到真正有用的信息。
+
+中文:这篇论文适合 Week 3,因为它正好连接 Week 1 和 Week 2。Week 1 的 Lost in the Middle 告诉我们:关键信息即使已经在上下文里,模型也可能因为位置问题用不好。Week 2 的 RAG 告诉我们:retriever 决定哪些材料进入上下文。LongLLMLingua 进一步追问:这些材料进来以后,哪些应该保留、哪些应该删掉、是否需要重新排序、压缩后会不会丢掉证据链。
+
+English: LongLLMLingua studies prompt compression for long-context scenarios. It connects Week 1 and Week 2: after context is selected, the system still needs to reduce noise, preserve key information, handle position bias, and avoid information loss.
+
+### 当前影响 / Current Impact
+
+中文:这篇论文的影响不只是"一个压缩算法",而是把 prompt compression 变成 RAG、agent、长上下文应用里的一个系统组件。现在可以从几个方向看到它的影响:
+
+1. 中文:RAG pipeline 里的 context compression。LangChain 已经提供 `LLMLinguaCompressor`,可以和 `ContextualCompressionRetriever` 组合,在 retriever 返回文档后、LLM 生成前压缩上下文。
+   English: RAG pipelines can use context compression between retrieval and generation. LangChain provides `LLMLinguaCompressor` with `ContextualCompressionRetriever`.
+2. 中文:LlamaIndex 里的 postprocessor。LlamaIndex 提供 `LongLLMLinguaPostprocessor`,用于压缩检索出的 nodes,说明这类方法已经被吸收到 RAG 框架的后处理层。
+   English: LlamaIndex provides `LongLLMLinguaPostprocessor`, showing that this idea has become a post-retrieval processing component in RAG frameworks.
+3. 中文:LLMLingua 方法家族。Microsoft 的 LLMLingua repo 把 LLMLingua、LongLLMLingua、LLMLingua-2、KV-cache compression、SecurityLingua 放在同一条 prompt-compression / efficient inference 方向上,说明这个方向已经扩展到 task-agnostic compression、推理加速和安全防护。
+   English: Microsoft's LLMLingua repo positions LLMLingua, LongLLMLingua, LLMLingua-2, KV-cache compression, and SecurityLingua as a broader prompt-compression / efficient-inference family.
+4. 中文:更近的系统评测开始追问"压缩到底什么时候真的省时间"。2026 年的 `Prompt Compression in the Wild` 研究把压缩开销、解码延迟、质量、硬件条件分开评估,说明 prompt compression 已经从算法问题变成系统 trade-off 问题。
+   English: Recent systems evaluation asks when compression really saves time. The 2026 `Prompt Compression in the Wild` study evaluates compression overhead, decoding latency, quality, and hardware conditions separately.
+5. 中文:对 TRI 的启发是:不要只问 context 是否足够多,还要问 context 是否足够干净、关键信息密度是否够高、位置是否合适、压缩是否损失 provenance。
+   English: For TRI, the lesson is not only whether context is sufficient, but whether it is clean, dense in key information, well positioned, and still preserves provenance after compression.
+
+### 当前生态来源 / Current Ecosystem Sources
+
+中文:下面来源用于核对"当前影响",不是论文原始 claim 的直接证据。
+
+English: The sources below verify current impact. They are not direct evidence for the paper's original claims.
+
+- LongLLMLingua ACL paper: https://aclanthology.org/2024.acl-long.91/
+- Microsoft LLMLingua repository: https://github.com/microsoft/LLMLingua
+- LlamaIndex `LongLLMLinguaPostprocessor`: https://developers.llamaindex.ai/python/framework-api-reference/postprocessor/longllmlingua/
+- LangChain `LLMLinguaCompressor`: https://docs.langchain.com/oss/python/integrations/retrievers/llmlingua/
+- `Prompt Compression in the Wild` (ECIR 2026 accepted, arXiv): https://arxiv.org/abs/2604.02985
+
 ## Step-by-Step Execution / 一步步执行
 
 ### Step 1: Title and Abstract / 标题和摘要

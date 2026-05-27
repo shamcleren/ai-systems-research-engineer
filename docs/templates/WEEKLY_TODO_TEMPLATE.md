@@ -22,6 +22,30 @@ English: Read only the source specified below. You do not need to decide which l
 - Source traceability / 来源追溯: `<official url>`
 - Optional reference / 可选参考: `<optional source, only if blocked>`
 
+## Paper Brief and Current Impact / 论文简介与当前影响
+
+中文：这一节是阅读前导读，帮助你先知道这篇论文大概在学术和工程生态里处于什么位置。它不是 claim audit 的直接证据；正式写 claim 时仍要回到论文实验和原文。
+
+English: This section is a pre-reading guide that explains where the paper sits in the research and engineering ecosystem. It is not direct evidence for claim audit; formal claims still need to be grounded in the paper's experiments and text.
+
+### 中文简介
+
+中文：`<用 1-2 段中文说明论文讲什么、解决什么问题、为什么适合本周主题。>`
+
+English: `<One short English companion summary, if useful.>`
+
+### 当前影响 / Current Impact
+
+中文：`<列出 3-5 个当前技术、产品能力、开源框架、评测方向或工程实践，说明它们如何吸收了这篇论文的思路。涉及最新生态时，先核对来源。>`
+
+English: `<List 3-5 current technologies, product capabilities, open-source frameworks, evaluation directions, or engineering practices that use ideas related to this paper. Verify current ecosystem claims first.>`
+
+### 当前生态来源 / Current Ecosystem Sources
+
+中文：`<列出用于核对当前影响的来源链接。注意:这些来源说明"现在有什么人在用/扩展这个思路",不等于论文原始 claim。>`
+
+English: `<List source links used to verify current impact. These sources show who uses or extends the idea now; they are not the paper's original claims.>`
+
 ## Step-by-Step Execution / 一步步执行
 
 ### Step 1: <Action> / <中文动作>
@@ -161,4 +185,3 @@ Please review my Week N TODO answers as a research mentor. Focus on:
       English: All answers are written in this TODO file first.
 - [ ] 中文：你已经把 Review Prompt 发给 mentor。  
       English: You have sent the Review Prompt to the mentor.
-

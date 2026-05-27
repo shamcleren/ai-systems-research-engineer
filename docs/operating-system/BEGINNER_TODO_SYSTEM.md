@@ -41,6 +41,7 @@ Each TODO document must include:
 | 背景 / Context | 为什么要做这个任务 |
 | 如何使用 / How to Use This TODO | 明确告诉学习者先在 TODO 里回答 |
 | 阅读材料 / Source | 要读的 paper、PDF、文档、代码或实验 |
+| 论文简介与当前影响 / Paper Brief and Current Impact | 用中文先解释论文讲什么、为什么重要、现在有哪些技术或能力吸收了它的思路；如果涉及最新生态，mentor 必须先核对来源 |
 | 每一步怎么执行 / How to Execute Each Step | 每个 step 内部包含读什么、中文导读、怎么写、答案框 |
 | 完成标准 / Done Criteria | 做到什么程度算完成 |
 | 完成后做什么 / Completion Flow | 填 completion log、发 review prompt、等待 mentor review |
@@ -154,6 +155,8 @@ English: After creating or updating a TODO, check it against the list below. If 
       English: Does every step specify the expected answer shape, such as three sentences, a five-row table, or at least five claim-audit rows?
 - [ ] 中文：如果源材料是英文论文，是否提供了中文导读或关键词解释？  
       English: If the source is an English paper, does it provide Chinese reading guidance or keyword explanations?
+- [ ] 中文：是否在正式阅读步骤前提供了中文论文简介、当前影响，以及哪些现代技术或能力吸收了论文思路？
+      English: Before the reading steps, does it provide a Chinese paper brief, current impact, and which modern technologies or capabilities have absorbed the paper's ideas?
 - [ ] 中文：完成标准的每个细项是否都有中文和英文？  
       English: Does every done-criteria subitem have both Chinese and English?
 - [ ] 中文：完成后是否知道要填 completion log、发 review prompt、等待 review？  
@@ -166,4 +169,3 @@ English: After creating or updating a TODO, check it against the list below. If 
 中文：每周开始先看 `docs/todos/`；每周结束把完成情况写回同一个 TODO 文件，不另开散乱笔记。
 
 English: Start each week from `docs/todos/`. At the end of the week, write completion notes back into the same TODO file instead of scattering notes elsewhere.
-
