@@ -257,11 +257,11 @@ English: Read Experiments / Results. Extract only tasks, baselines, metrics, wha
 
 | Item | 中文回答 |
 |---|---|
-| workloads / 任务 | TODO |
-| baselines / 对比对象 | TODO |
-| metrics / 指标 | TODO |
-| what it proves / 它能证明什么 | TODO |
-| what it does not prove / 它不能证明什么 | TODO |
+| workloads / 任务 | 抽取式 QA（Natural Questions、TriviaQA）；生成式任务（Jeopardy 问题生成、MS MARCO 摘要） |
+| baselines / 对比对象 | closed-book（纯参数模型）、retrieval-only（纯检索模型）、RAG-Sequence、RAG-Token |
+| metrics / 指标 | QA：Exact Match + F1（自动指标）；生成：人工评估（真实性、流畅性） |
+| what it proves / 它能证明什么 | RAG 在知识密集型任务上优于 closed-book 和 retrieval-only；可通过更新索引更新知识 |
+| what it does not prove / 它不能证明什么 | 效率和成本（k 增大时 latency/cost 是否爆炸）；检索质量对生成的影响；reranker 的作用 |
 
 ---
 
