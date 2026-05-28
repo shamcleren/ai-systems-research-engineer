@@ -71,7 +71,7 @@ English: The sources below verify current impact. They are not direct evidence f
 
 ### Step 1: Title and Abstract / 标题和摘要
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -96,19 +96,19 @@ English: Write three sentences: what problem the paper studies, why it matters, 
 1. 这篇论文研究什么问题:
 
    ```text
-   TODO
+   这篇论文研究长上下文场景下 prompt 太长、噪声太多、关键信息位置不好导致成本升高和模型表现下降的问题。
    ```
 
 2. 为什么这个问题重要:
 
    ```text
-   TODO
+   这个问题重要是因为 RAG、ICL、agent、多文档 QA 都会把 prompt 变长，但更长不等于更有用，可能增加 latency、cost 和干扰信息。
    ```
 
 3. 作者大概怎么做:
 
    ```text
-   TODO
+   作者提出 LongLLMLingua，用 question-aware compression、document reordering、dynamic compression ratio 和 subsequence recovery 来提高关键信息密度，并在若干长上下文 benchmark 上降低成本、减少延迟、改善或保持生成效果。
    ```
 
 ---
