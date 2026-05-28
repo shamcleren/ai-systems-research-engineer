@@ -115,7 +115,7 @@ English: Write three sentences: what problem the paper studies, why it matters, 
 
 ### Step 2: First Keywords / 第一批关键词
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -161,13 +161,24 @@ English: Pick at least 12 terms and write one Chinese explanation for each.
 
 | English term | 中文解释 |
 |---|---|
-| TODO | TODO |
+| long context | 指 token 数量很长的输入场景（几千到几万 token），如多文档问答、长文档摘要、代码补全。长上下文不等于高质量上下文，可能引入噪声、冗余和位置偏差。 |
+| prompt compression | 在尽量保留任务相关信息的前提下，减少 prompt 中的 token 数量。目标不是简单截断，而是提高关键信息密度。 |
+| key information density | prompt 中与问题/任务相关信息的占比。密度越高，模型越容易找到有用信息，生成质量越好。 |
+| position bias | LLM 对关键信息在 prompt 中的位置敏感。放在开头或结尾的信息比放在中间的信息更容易被模型利用（Lost in the Middle 效应）。 |
+| question-aware compression | 压缩时考虑问题内容，根据问题与文档的相关性决定保留哪些信息。与 question-agnostic 的方法（如 LLMLingua 原版）相对。 |
+| coarse-to-fine compression | 先在文档级别粗筛（coarse），再在 token 级别细压（fine）的两阶段压缩策略。 |
+| contrastive perplexity | 用 perplexity(xi|x<i) - perplexity(xi|xque, x<i) 来衡量 token 与问题的关联度。等价于条件逐点互信息（PMI），能更好区分问题相关和无关的 token。 |
+| document reordering | 根据文档与问题的相关性分数，重新排列压缩后文档的顺序，把最相关的放到开头，缓解 position bias。 |
+| dynamic compression ratio | 不同文档使用不同的压缩率：与问题相关度高的文档保留更多 token，相关度低的压缩更狠。通过粗筛阶段的重要性分数指导细压阶段的 budget 分配。 |
+| subsequence recovery | 压缩后恢复被截断的实体名称。利用原始 prompt、压缩 prompt 和 LLM 输出之间的子序列关系，把截断的 token 替换回完整原文。 |
+| compression ratio | 原始 prompt token 数与压缩后 token 数的比值。如 4x 表示压缩到原来的 1/4。比值越高压缩越狠，但可能损失更多信息。 |
+| information loss | 压缩过程中不可避免地会丢失一些信息。关键风险是丢失了对回答问题至关重要的证据链，导致 LLM 无法生成正确答案。 |
 
 ---
 
 ### Step 3: Problem Definition / 问题定义
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -191,16 +202,16 @@ English: Fill the four-row table below. Each row should explain what the problem
 
 | Problem / 问题 | What it means / 含义 | Why it matters / 为什么重要 |
 |---|---|---|
-| Cost / latency | TODO | TODO |
-| Noise / redundancy | TODO | TODO |
-| Position bias | TODO | TODO |
-| Information loss after compression | TODO | TODO |
+| Cost / latency | token 数量越多，API 调用费用越高，推理延迟越大。论文数据显示 LooGLE 原始 prompt 平均 ~30k token，费用 $93.6/千样本。 | 直接影响实际部署的经济可行性和用户体验。长 prompt 的延迟可能比短 prompt 高 2-3 倍。 |
+| Noise / redundancy | 更多文档/历史被塞进 prompt，其中大量内容与当前问题无关（噪声）或重复（冗余）。论文 Figure 1a 显示文档数从 1 增加到 20 时，归一化性能从 ~95% 下降到 ~85%。 | 噪声会分散模型注意力，降低生成质量。即使关键信息在 prompt 里，噪声也可能淹没它。 |
+| Position bias | 关键信息放在 prompt 开头时模型表现最好，放在中间时显著下降。论文 Figure 1b 显示原始 prompt 中答案在第 1 位时准确率 ~73%，在第 10 位时降到 ~54%。 | 即使关键信息已经被检索进上下文，如果位置不好，模型也可能用不好它。这直接连接 Week 1 的 Lost in the Middle。 |
+| Information loss after compression | 压缩可能截断或删除对回答问题至关重要的 token。论文 Figure 4/6 显示高压缩率下实体名被截断（如 Wilhelm Conrad Röntgen 变成 Wilhelmgen）。 | 如果压缩丢掉了关键证据，压缩后的 prompt 比原始 prompt 更差。需要 subsequence recovery 等机制来补救。 |
 
 ---
 
 ### Step 4: Context Pipeline Boundary / 上下文流水线边界
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -240,15 +251,15 @@ English: Use a three-row table to explain what Week 1, Week 2, and Week 3 each a
 
 | Week | Main question / 核心问题 | TRI relevance / 和 TRI 的关系 |
 |---|---|---|
-| Week 1: Context use | TODO | TODO |
-| Week 2: Context selection | TODO | TODO |
-| Week 3: Context compression and noise | TODO | TODO |
+| Week 1: Context use | 信息已经在长上下文里，模型能不能用好？关键是位置偏差——信息放在中间时模型最容易忽略。 | TRI 的时间线查询结果即使被检索到，如果放在 prompt 中间位置，模型也可能用不好。需要考虑结果排序策略。 |
+| Week 2: Context selection | 哪些信息应该被检索进上下文？RAG 的 retriever 决定哪些文档进入 prompt。 | TRI 的 retriever 需要从多个时间源中选出与查询最相关的事件。检索质量直接决定后续压缩的起点。 |
+| Week 3: Context compression and noise | 选进来的上下文质量如何？是否太长、太吵、位置太差？压缩后是否丢掉关键信息？ | TRI 的上下文可能包含大量无关时间事件。需要在压缩时保留时间因果链的关键信息，同时减少噪声。压缩后重排序也很重要。 |
 
 ---
 
 ### Step 5: System Model / 系统模型
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -292,18 +303,18 @@ English: Fill the system model table below.
 
 | Item | 中文回答 |
 |---|---|
-| input / 输入 | TODO |
-| compressor 做什么 | TODO |
-| compressed context 是什么 | TODO |
-| target LLM 做什么 | TODO |
-| output / 输出 | TODO |
-| main risk / 主要风险 | TODO |
+| input / 输入 | question（问题）+ long prompt（长上下文，包含 instruction + K 个文档 + question 本身）。论文实验中 prompt 长度从 ~2.4k 到 ~30k token 不等。 |
+| compressor 做什么 | 用小模型（LLaMA-2-7B-Chat）做三步压缩：(1) 粗筛：用 question-aware 的 perplexity 计算每个文档与问题的相关性 rk，保留 top-K' 文档并重排序；(2) 细压：用 contrastive perplexity 在 token 级别压缩，不同文档用不同压缩率；(3) 子序列恢复：把压缩后截断的实体名恢复为原文。 |
+| compressed context 是什么 | 压缩后的 prompt，token 数大幅减少（2x-10x），但关键信息密度更高。论文示例：~13k token 压缩到 ~2k token。压缩后的文本不一定是完整句子，可能是截断的 token 序列（如 "Wilhelmdrad"）。 |
+| target LLM 做什么 | 基于压缩后的 prompt 生成回答。论文用 GPT-3.5-Turbo 和 LongChat-13B-16k 作为目标 LLM。压缩后的 prompt 直接替代原始 prompt 送入。 |
+| output / 输出 | LLM 生成的回答。如果用了 subsequence recovery，会把回答中被截断的实体替换回完整原文（如 "Wilhelmdrad" -> "Wilhelm Conrad Röntgen"）。 |
+| main risk / 主要风险 | (1) 压缩可能丢失关键信息，特别是多跳推理中需要的中间证据；(2) 压缩后的截断文本可能影响 LLM 理解；(3) question-aware 压缩不能复用——同一 context 不同 question 需要重新压缩，增加计算开销；(4) 小模型（7B）的 perplexity 估计可能不准确，导致误删重要 token。 |
 
 ---
 
 ### Step 6: Method Components / 方法组件
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -327,16 +338,16 @@ English: Fill a four-row table. For each component, write what problem it addres
 
 | Component / 组件 | Problem addressed / 解决什么问题 | Possible risk / 可能风险 |
 |---|---|---|
-| Question-aware coarse-to-fine compression | TODO | TODO |
-| Document reordering | TODO | TODO |
-| Dynamic compression ratio | TODO | TODO |
-| Post-compression recovery | TODO | TODO |
+| Question-aware coarse-to-fine compression | 解决传统压缩方法（如 LLMLingua、Selective Context）不考虑问题内容的缺陷。用 p(xque\|xdoc_k) 衡量文档与问题的相关性做粗筛，用 contrastive perplexity（等价于 PMI）在 token 级别保留问题相关 token。 | (1) 需要为每个问题重新压缩，无法复用 context；(2) 小模型的 perplexity 估计可能不准确，尤其在复杂推理场景；(3) 粗筛的 restrictive statement（"We can get the answer..."）依赖 prompt engineering。 |
+| Document reordering | 解决 position bias（Lost in the Middle）。粗筛后按重要性分数 rk 重排文档，把最相关的放到开头，让 LLM 更容易利用。 | (1) 重排序可能破坏文档间的时序或逻辑关系（论文实验显示 timeline 任务不受影响，但更复杂的因果链可能受影响）；(2) 依赖粗筛阶段的重要性分数准确性。 |
+| Dynamic compression ratio | 解决不同文档信息密度不同但压缩率一刀切的问题。相关度高的文档保留更多 token，相关度低的压缩更狠。用线性调度器根据粗筛排名分配细压 budget。 | (1) 压缩率分配依赖粗筛阶段的排名准确性；(2) 线性调度器可能不是最优分配策略；(3) 超参数 δτ 需要调优。 |
+| Post-compression recovery | 解决压缩截断实体名称导致 LLM 输出不完整的问题。利用原始 prompt、压缩 prompt 和 LLM 输出之间的子序列关系，把截断 token 替换回完整原文。 | (1) 只能恢复原始 prompt 中存在的子序列，不能恢复被完全删除的内容；(2) 依赖 LLM 输出中包含压缩 prompt 中的 token（LLM 可能改写而非复制）；(3) 增加后处理复杂度。 |
 
 ---
 
 ### Step 7: Evaluation Model / 评测模型
 
-- [ ] Done
+- [x] Done
 
 #### What to Read / 读什么
 
@@ -360,18 +371,18 @@ English: Fill the evaluation model table.
 
 | Item | 中文回答 |
 |---|---|
-| workloads / 任务 | TODO |
-| baselines / 对比对象 | TODO |
-| variables / 操控变量 | TODO |
-| metrics / 指标 | TODO |
-| what it proves / 它能证明什么 | TODO |
-| what it does not prove / 它不能证明什么 | TODO |
+| workloads / 任务 | 5 个 benchmark：NaturalQuestions（多文档 QA，~3k token）、LongBench（6 类长上下文任务，~10k token）、ZeroSCROLLS（摘要+QA+排序，~10k token）、MuSiQue（多跳 QA，~2.5k token）、LooGLE（长依赖 QA，~30k token）。覆盖多文档 QA、摘要、代码补全、few-shot、多跳推理等场景。 |
+| baselines / 对比对象 | 两组：(1) 检索方法：BM25、Gzip、SBERT、OpenAI Embedding、LongLLMLingua rk（仅粗筛）；(2) 压缩方法：Selective Context、LLMLingua。另外有 Zero-shot（无 context）和 Original Prompt（完整 context）作为上下界。 |
+| variables / 操控变量 | (1) 压缩比：2x、4x、6x、10x；(2) 答案文档位置：1st、5th、10th、15th、20th；(3) 消融实验：逐一移除各组件。 |
+| metrics / 指标 | (1) 准确率/F1（生成质量）；(2) token 数/压缩比（成本）；(3) end-to-end latency（延迟，含压缩时间+LLM 推理时间）；(4) inference cost per 1000 samples（经济成本）。 |
+| what it proves / 它能证明什么 | (1) 在这些 benchmark 上，question-aware 压缩比 question-agnostic 压缩和纯检索效果更好；(2) 压缩后的 prompt 在多个任务上性能等于或优于原始 prompt；(3) 压缩确实降低了 token 数、延迟和成本；(4) 每个组件（粗筛、细压、重排、动态压缩率、子序列恢复）的消融实验都显示性能下降，证明各组件都有贡献。 |
+| what it does not prove / 它不能证明什么 | (1) 不能证明压缩在所有长上下文场景都有效（benchmark 有限，且论文承认复杂关系场景可能失效）；(2) 不能证明压缩一定提升准确率（某些场景如 ZeroSCROLLS 摘要任务效果接近原始 prompt）；(3) 不能证明压缩开销一定值得（压缩本身需要小模型推理，增加计算，论文承认 LongLLMLingua 计算量是 LLMLingua 的 2 倍）；(4) 不能证明在更复杂推理（如多跳、长因果链）上压缩不会丢失关键中间证据。 |
 
 ---
 
 ### Step 8: TRI Connection / 连接 TRI
 
-- [ ] Done
+- [x] Done
 
 #### What to Do / 做什么
 
@@ -395,17 +406,17 @@ English: Write a five-row table: metric, what it may measure, what it cannot mea
 
 | Metric / 指标 | May measure / 可能测量 | Cannot measure alone / 单独不能测量 | Companion metric / 搭配指标 |
 |---|---|---|---|
-| context_noise_ratio | TODO | TODO | TODO |
-| key_information_recall | TODO | TODO | TODO |
-| compression_ratio | TODO | TODO | TODO |
-| position_of_key_information | TODO | TODO | TODO |
-| answer_grounding_rate | TODO | TODO | TODO |
+| context_noise_ratio | 上下文中与问题/任务无关的 token 占比。可以反映 retriever 的噪声水平，也可以作为压缩前后的对比指标。 | 不能测量噪声的具体影响——即使噪声比例高，如果关键信息在好位置且密度够高，模型仍可能表现好。也不能区分“冗余但无害”和“有害噪声”。 | key_information_recall（确认关键信息还在）+ position_of_key_information（确认位置是否好） |
+| key_information_recall | 压缩/筛选后保留了多少对回答问题必需的关键信息。论文用 recall@k 评估粗筛方法，LongLLMLingua rk 的 recall 在各 k 值上都最高。 | 不能测量关键信息的质量（可能是关键但过时的信息）、位置（recall 高但放在中间仍可能被忽略）、或完整性（部分关键信息丢失仍算 recall）。 | position_of_key_information + answer_grounding_rate（确认模型实际用了这些信息） |
+| compression_ratio | 原始 prompt 与压缩后 prompt 的 token 数比值。反映成本节省程度。 | 不能测量压缩质量——高压缩比可能意味着丢失了关键信息。也不能等同于性能提升——论文显示 4x 压缩时某些任务性能反而提升，但某些任务（如摘要）效果接近原始。 | key_information_recall + answer_quality（压缩后的实际生成质量） |
+| position_of_key_information | 关键信息在 prompt 中的位置。论文通过固定答案文档在不同位置来评估 position bias。重排后所有位置性能一致（76.2%）。 | 不能单独解释性能——位置好但信息不完整、位置好但噪声太多、位置好但模型理解不了，都会导致性能差。也不能反映多条关键信息的相对位置关系。 | key_information_recall + context_noise_ratio |
+| answer_grounding_rate | LLM 的回答是否基于 prompt 中的证据生成（vs. 幻觉或基于参数知识）。Subsequence recovery 就是一种 grounding 机制。 | 不能测量答案正确性（grounded 但可能 grounded 到错误信息）。也不能区分“基于 prompt 回答”和“基于参数知识回答”——两者可能给出相同答案。 | answer_correctness + evidence_traceability（答案可追溯到具体哪条证据） |
 
 ---
 
 ### Step 9: Claim Audit / 主张审计
 
-- [ ] Done
+- [x] Done
 
 #### What to Do / 做什么
 
@@ -423,26 +434,26 @@ English: Be careful not to turn "works on some benchmarks" into "all long-contex
 
 | Claim / 主张 | Evidence / 证据 | What it does not prove / 不证明什么 | TRI relevance / 和 TRI 的关系 |
 |---|---|---|---|
-| TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
+| Question-aware 压缩比 question-agnostic 压缩效果好 | NaturalQuestions 上 LongLLMLingua（77.2%）远超 LLMLingua（39.7%）和 Selective Context（45.4%），2x 约束下。消融实验显示去掉 question-awareness 后降到 42.1%。 | 不能证明 question-aware 压缩在所有任务上都优于 question-agnostic。摘要和代码任务中差距较小。也不能证明 question-awareness 是唯一原因——对比 perplexity 计算方式、restrictive statement 等也有影响。 | TRI 如果做上下文压缩，应该考虑查询感知，而不是盲目压缩所有 context。但需要验证在时间推理场景中 question-aware 是否足够。 |
+| 压缩后的 prompt 性能可以等于或优于原始 prompt | NaturalQuestions 4x 压缩：LongLLMLingua 75.0% vs 原始 75.7%（接近持平）；LooGLE 上 LongLLMLingua 32.1% vs 原始 22.6%（+9.5%）。LongBench 2k 约束下 48.3% vs 原始 44.0%。 | 不能证明压缩在所有压缩比和所有任务上都保持性能。ZeroSCROLLS 摘要任务上压缩后效果接近原始但未超越。高压缩比（10x+）下未充分测试。也不能证明性能提升来自压缩本身而非位置重排。 | TRI 的压缩策略不能假设“压缩一定更好”，需要在每个子任务上验证。尤其要注意时间线摘要类任务可能对压缩更敏感。 |
+| Document reordering 缓解 position bias | 消融实验：NaturalQuestions 上 LongLLMLingua w/ Reorder 所有位置都是 76.2%，而 w/o Reorder 从 77.2%（1st）降到 70.6%（20th）。其他 baseline 加上 reorder 后也有提升。 | 不能证明重排序在所有场景都有效。论文只测试了文档级重排，没有测试段落级或句子级。也不能证明重排序对需要保持时序的任务（如时间线）完全无害——虽然 LooGLE timeline 任务没下降，但样本有限。 | TRI 的时间线查询结果可能需要考虑排序策略。但要小心：如果查询需要时序推理（"A 发生在 B 之前"），重排序可能破坏时序线索。 |
+| Dynamic compression ratio 比固定压缩率好 | NaturalQuestions 2x 约束消融：去掉 dynamic ratio 后从 77.2% 降到 44.4%（平均 68.8%）。LongBench 2k 约束下从 48.3% 降到 45.7%。 | 不能证明线性调度器是最优的 budget 分配策略。也不能证明在所有任务上动态压缩率都优于固定压缩率——论文只测试了线性调度。 | TRI 如果做压缩，应该对不同类型的时间事件（高频事件 vs 低频事件）分配不同压缩率。但需要实验验证最优分配策略。 |
+| Subsequence recovery 提升实体完整性 | 论文 Figure 4/6 展示了恢复效果："Wilhelmdrad" -> "Wilhelm Conrad Röntgen"。NaturalQuestions 消融：去掉 recovery 从 77.2% 降到 76.7%（影响不大）。但对 LLMLingua 从 39.7% 提升到 43.8%。 | 不能证明 subsequence recovery 在所有场景都有显著提升。在 NaturalQuestions 上提升仅 0.5%。也不能证明它能恢复所有被压缩掉的信息——只能恢复原始 prompt 中存在但被截断的子序列，完全被删除的信息无法恢复。 | TRI 的压缩后处理可以考虑实体恢复机制，尤其在需要精确名称的时间查询中。但不能依赖它作为主要的信息保全手段。 |
 
 ---
 
 ### Step 10: Completion and Mentor Review / 完成并找 mentor review
 
-- [ ] Done
+- [x] Done
 
 #### Completion Log / 完成记录
 
 | Item | Answer |
 |---|---|
-| Date / 日期 | TODO |
-| Time spent / 耗时 | TODO |
-| Hardest part / 最难的地方 | TODO |
-| One question / 一个问题 | TODO |
+| Date / 日期 | 2026-05-28 |
+| Time spent / 耗时 | ~2 小时（含读论文） |
+| Hardest part / 最难的地方 | 区分 claim 的 evidence 和 does not prove——论文的实验设计很全面，但每个结论都有适用边界，需要仔细想清楚边界在哪里。 |
+| One question / 一个问题 | LongLLMLingua 的 contrastive perplexity 等价于 PMI，但 PMI 在稀疏数据上可能不稳定。论文没有讨论这个问题——在实际部署中，如果小模型对某些领域的 token 概率估计很差，contrastive perplexity 的区分度会不会大幅下降？ |
 
 #### Review Prompt / 复盘请求
 
@@ -474,15 +485,15 @@ Please review my Week 3 LongLLMLingua TODO answers as a research mentor. Focus o
 
 ## Done Criteria / 完成标准
 
-- [ ] 中文:Step 1-10 都已经填写或勾选。
+- [x] 中文:Step 1-10 都已经填写或勾选。
       English: Steps 1-10 are filled or checked.
-- [ ] 中文:所有答案都先写在本 TODO 文件里。
+- [x] 中文:所有答案都先写在本 TODO 文件里。
       English: All answers are written in this TODO file first.
-- [ ] 中文:至少写出 12 个术语解释。
+- [x] 中文:至少写出 12 个术语解释。
       English: At least 12 term explanations are written.
-- [ ] 中文:claim audit 至少有 5 行,并且每行都写了 evidence 和 does not prove。
+- [x] 中文:claim audit 至少有 5 行,并且每行都写了 evidence 和 does not prove。
       English: The claim audit has at least five rows, and each row includes evidence and does not prove.
-- [ ] 中文:TRI metric critique 至少覆盖 context_noise_ratio、key_information_recall、compression_ratio、position_of_key_information、answer_grounding_rate。
+- [x] 中文:TRI metric critique 至少覆盖 context_noise_ratio、key_information_recall、compression_ratio、position_of_key_information、answer_grounding_rate。
       English: The TRI metric critique covers at least context_noise_ratio, key_information_recall, compression_ratio, position_of_key_information, and answer_grounding_rate.
 - [ ] 中文:你已经把 Review Prompt 发给 mentor,等待 mentor review 后再进入 Week 4。
       English: You have sent the Review Prompt to the mentor and will wait for mentor review before moving to Week 4.
