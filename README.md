@@ -37,6 +37,7 @@ Roadmap details:
 - [Week 1 TODO](docs/todos/WEEK-01-TODO.md)
 - [Week 2 TODO](docs/todos/WEEK-02-TODO.md)
 - [Week 3 TODO](docs/todos/WEEK-03-TODO.md)
+- [Week 4 TODO](docs/todos/WEEK-04-TODO.md)
 
 ## Baseline
 
